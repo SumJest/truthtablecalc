@@ -111,7 +111,7 @@ class Solver:
                         # Заносим предварительный результат если необходимо
                         if is_gaps:
                             gaps.append(self.__operands[len(self.__operands) - 1])
-                    self.__operators.pop()  # Удаляем закрывающуюся скобку
+                    self.__operators.pop()  # Удаляем открывающуюся скобку
                 else:
                     # Циклично проверяем, нужно ли выполнить операцию и выполняем
                     while self.__can_operate(letter):
@@ -284,6 +284,7 @@ class Builder:
                 # которое нам вернула функция solve
                 values.append(int(slvr.solve(self.statement, is_gaps=is_gaps, **kwargs)))
         return input_data, values  # Возвращаем кортеж, это и будет таблица
+
 
 
 def normalise(statement: str) -> str:
