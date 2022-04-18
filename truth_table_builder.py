@@ -81,7 +81,7 @@ class Solver:
         # В противном случае возвращаем False
         return (p1 >= 0) and (p2 >= 0) and (p1 >= p2)
 
-    def solve(self, statement: str, is_gaps: bool, **kwargs) -> bool | typing.List[bool]:
+    def solve(self, statement: str, is_gaps: bool, **kwargs) -> typing.Union[bool, typing.List[bool]]:
         """
         Функция решения логического выражения
         :param statement: Выражение
@@ -111,7 +111,7 @@ class Solver:
                         # Заносим предварительный результат если необходимо
                         if is_gaps:
                             gaps.append(self.__operands[len(self.__operands) - 1])
-                    self.__operators.pop()  # Удаляем открывающуюся скобку
+                    self.__operators.pop()  # Удаляем закрывающуюся скобку
                 else:
                     # Циклично проверяем, нужно ли выполнить операцию и выполняем
                     while self.__can_operate(letter):
@@ -189,7 +189,7 @@ class Breaker:
         gaps = []
         for letter in statement:
 
-            if ord('z') >= ord(letter) >= ord('a'):
+            if ord('z') >= ord(letter) >= ord('a') or str.isdigit(letter):
                 # Если это буква, то заносим в стэк операндов
                 self.__operands.append(letter)
             else:
@@ -241,7 +241,7 @@ class Builder:
         return variables
 
     def build(self, is_gaps: bool = False) -> typing.Tuple[
-        typing.List[typing.List[int]], typing.List[int] | typing.List[typing.List[int]]]:
+        typing.List[typing.List[int]], typing.Union[typing.List[int], typing.List[typing.List[int]]]]:
         """
         Строит таблицу истинности
         :return: Кортеж из двумерного списка значений переменных и списка результатов или
@@ -284,7 +284,6 @@ class Builder:
                 # которое нам вернула функция solve
                 values.append(int(slvr.solve(self.statement, is_gaps=is_gaps, **kwargs)))
         return input_data, values  # Возвращаем кортеж, это и будет таблица
-
 
 
 def normalise(statement: str) -> str:
